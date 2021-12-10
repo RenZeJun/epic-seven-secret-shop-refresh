@@ -8,10 +8,12 @@ from numpy import random
 def mouseClick(clickTimes, lOrR, img, reTry):
     time.sleep(random.uniform(0.1,0.6))
     i=0
-    while i < 3:
+    while i < 5:
         location = pyautogui.locateCenterOnScreen(img, confidence=0.9)
+        randomX = random.randint(-30,30)
+        randomY = random.randint(-3,3)
         if location is not None:
-            pyautogui.click(location.x, location.y, clicks=clickTimes, interval=0.2, duration=0.2, button=lOrR)
+            pyautogui.click(location.x+randomX, location.y+randomY, clicks=clickTimes, interval=0.2, duration=0.2, button=lOrR)
             break
         print("can't not find picture", img)
         #time.sleep(0.4)
@@ -24,7 +26,9 @@ def mouseClickBookMark(clickTimes, lOrR, img, reTry, purchaseComfirmBm):
     if reTry == 1:
         location = pyautogui.locateCenterOnScreen(img, confidence=0.95)
         if location is not None:
-            pyautogui.click(location.x+779, location.y+29, clicks=clickTimes, interval=0.2, duration=0.2, button=lOrR)
+            randomX = (random.randint(-30,30)+779)
+            randomY = (random.randint(-3,3)+29)
+            pyautogui.click(location.x+randomX, location.y+randomY, clicks=clickTimes, interval=0.2, duration=0.2, button=lOrR)
             print("find bookmarks")
             x+=1
             while reTry < 4:
@@ -32,7 +36,7 @@ def mouseClickBookMark(clickTimes, lOrR, img, reTry, purchaseComfirmBm):
                 time.sleep(1)
                 if location2 is not None:
                     print("locating purchasebutton")
-                    pyautogui.click(location2.x, location2.y, clicks=clickTimes, interval=0.2, duration=0.2, button=lOrR)
+                    pyautogui.click(location2.x+randomX, location2.y+randomX, clicks=clickTimes, interval=0.2, duration=0.2, button=lOrR)
                     break
                 reTry += 1
     if x == 0:
@@ -77,7 +81,7 @@ def mainWork(img):
             #time.sleep(0.5)
             pyautogui.scroll(-3)
             print("scrolling 3")
-            time.sleep(random.uniform(0.5,1))
+            time.sleep(random.uniform(0.3,6))
         i += 1
 
 
@@ -89,9 +93,13 @@ if __name__ == '__main__':
     sheet1 = wb.sheet_by_index(0)
     print('good luck on bookmarks')
 
-    key = input('press 1 to do it once and press 2 to loop to death! XD')
+    key = input('press 1 to choose how many times you want to refresh and press 2 to loop to death! XD\n')
     if key == '1':
-        mainWork(sheet1)
+        keys = input('enter how any times you want to refresh?\n')
+        i = 0
+        while i < int(keys):
+            mainWork(sheet1)
+            i+=1
     elif key == '2':
         while True:
             mainWork(sheet1)
