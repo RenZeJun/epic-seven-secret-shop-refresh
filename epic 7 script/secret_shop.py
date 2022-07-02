@@ -4,9 +4,11 @@ import xlrd
 import random
 from numpy import random
 
+countcb = 0
+countmb = 0
 
 def mouseClick(clickTimes, lOrR, img, reTry):
-    time.sleep(random.uniform(0.1,0.6))
+    #time.sleep(random.uniform(0.1,0.6))
     i=0
     while i < 5:
         location = pyautogui.locateCenterOnScreen(img, confidence=0.9)
@@ -15,12 +17,13 @@ def mouseClick(clickTimes, lOrR, img, reTry):
         if location is not None:
             pyautogui.click(location.x+randomX, location.y+randomY, clicks=clickTimes, interval=0.2, duration=0.2, button=lOrR)
             break
-        print("can't not find picture", img)
+        #print("can't not find picture", img)
         #time.sleep(0.4)
         i+=1
 
 
 def mouseClickBookMark(clickTimes, lOrR, img, reTry, purchaseComfirmBm):
+    global countcb
     time.sleep(random.uniform(0.1,0.6))
     x=0
     if reTry == 1:
@@ -35,12 +38,41 @@ def mouseClickBookMark(clickTimes, lOrR, img, reTry, purchaseComfirmBm):
                 location2 = pyautogui.locateCenterOnScreen(purchaseComfirmBm, confidence=0.95)
                 time.sleep(1)
                 if location2 is not None:
-                    print("locating purchasebutton")
-                    pyautogui.click(location2.x+randomX, location2.y+randomX, clicks=clickTimes, interval=0.2, duration=0.2, button=lOrR)
+                    #print("locating purchasebutton")
+                    pyautogui.click(location2.x, location2.y, clicks=clickTimes, interval=0.2, duration=0.2, button=lOrR)
+                    countcb += 1
+                    print(countcb ," covenent Bookmarks purchased")
                     break
                 reTry += 1
-    if x == 0:
-        print("can't not find picture(bm)")
+    #if x == 0:
+        #print("can't not find picture(bm)")
+    #time.sleep(0.4)
+
+
+def mouseClickBookMark2(clickTimes, lOrR, img, reTry, purchaseComfirmBm):
+    global countmb
+    time.sleep(random.uniform(0.1,0.6))
+    x=0
+    if reTry == 1:
+        location = pyautogui.locateCenterOnScreen(img, confidence=0.95)
+        if location is not None:
+            randomX = (random.randint(-30,30)+779)
+            randomY = (random.randint(-3,3)+29)
+            pyautogui.click(location.x+randomX, location.y+randomY, clicks=clickTimes, interval=0.2, duration=0.2, button=lOrR)
+            #print("find bookmarks")
+            x+=1
+            while reTry < 4:
+                location2 = pyautogui.locateCenterOnScreen(purchaseComfirmBm, confidence=0.95)
+                time.sleep(1)
+                if location2 is not None:
+                    #print("locating purchasebutton")
+                    pyautogui.click(location2.x, location2.y, clicks=clickTimes, interval=0.2, duration=0.2, button=lOrR)
+                    countmb += 1
+                    print(countmb ," Mystic Bookmarks purchased")
+                    break
+                reTry += 1
+    #if x == 0:
+        #print("can't not find picture(bm)")
     #time.sleep(0.4)
 
 
@@ -59,29 +91,34 @@ def mainWork(img):
             img = sheet1.row(i)[1].value
             img2 = sheet1.row(1)[2].value
             retry = 1
-            print(i)
+            #print(i)
             if i == 1:
                 mouseClickBookMark(1, "left", img, retry, purchaseComfirm)
-                print("Left click", img)
-                mouseClickBookMark(1,"left",img2, retry, purchaseComfirm)
-                print("Left click",img2)
+                #print("Left click", img)
+                mouseClickBookMark2(1,"left",img2, retry, purchaseComfirm)
+                #print("Left click",img2)
                 i += 1
                 continue
             elif i == 3:
                 mouseClickBookMark(1, "left", img, retry, purchaseComfirm)
-                print("Left click", img)
-                mouseClickBookMark(1,"left",img2, retry, purchaseComfirm)
-                print("Left click",img2)
+                #print("Left click", img)
+                mouseClickBookMark2(1,"left",img2, retry, purchaseComfirm)
+                #print("Left click",img2)
                 i += 1
                 continue
+            elif i == 5:
+                mouseClick(1, "left", img, retry)
+                #print("Left click", img)
+                time.sleep(0.5)
             mouseClick(1, "left", img, retry)
-            print("Left click", img)
+            #print("Left click", img)
         elif cmdType.value == 2.0:
-            print(i)
+            #print(i)
             #time.sleep(0.5)
-            pyautogui.scroll(-3)
-            print("scrolling 3")
-            time.sleep(random.uniform(0.3,6))
+            time.sleep(0.5)
+            #pyautogui.scroll(-3)
+            pyautogui.drag(0,-500,duration=0.5)
+            #print("scrolling 3")
         i += 1
 
 
